@@ -2,4 +2,21 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Paleta de colores principal -->
+    <color name="purple_main">#5C43E6</color>
+    <color name="bg_app">#F7F8FC</color>
+    <color name="text_dark">#1A1B23</color>
+    <color name="text_gray">#7A7C85</color>
+    <color name="accent_pink">#FF6B8B</color>
+    <color name="accent_yellow">#FFC107</color>
+    <color name="accent_blue_text">#4A90E2</color>
+
+    <!-- Paleta de colores pastel para los accesos rápidos -->
+    <color name="soft_green">#E3F9F1</color>
+    <color name="soft_pink">#FDE8ED</color>
+    <color name="soft_purple">#EEECFD</color>
+    <color name="soft_blue">#EAF4FD</color>
+    <color name="soft_teal">#E8F7F5</color>
+
 </resources>

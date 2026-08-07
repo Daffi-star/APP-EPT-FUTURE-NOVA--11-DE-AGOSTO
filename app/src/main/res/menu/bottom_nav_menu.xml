@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_inicio"
+        android:title="Inicio" />
+
+    <item
+        android:id="@+id/nav_calendar"
+        android:icon="@drawable/ic_agenda"
+        android:title="Agenda" />
+
+    <!-- ESPACIO HUECO PARA EL BOTÓN MÁS (+) -->
+    <item
+        android:id="@+id/nav_placeholder"
+        android:enabled="false"
+        android:title="" />
+
+    <item
+        android:id="@+id/nav_notifications"
+        android:icon="@drawable/img"
+        android:title="Avisos" />
+
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/ic_perfil"
+        android:title="Perfil" />
+
+</menu>
