@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RuwaySpace">
 
-        <!-- Tu pantalla de Login (Esta es la que abre primero porque tiene el LAUNCHER) -->
+        <!-- Tu pantalla de Login -->
         <activity
             android:name=".LoginActivity"
             android:exported="true"
@@ -24,16 +24,21 @@
             </intent-filter>
         </activity>
 
-        <!-- AÑADE ESTO AQUÍ: Tu pantalla principal o del Timeline -->
+        <!-- Pantalla Principal -->
         <activity
-            android:name="MainActivity"
+            android:name=".MainActivity"
             android:exported="false" />
+
+        <!-- Tutor IA -->
         <activity
             android:name=".TutorActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"> <!-- Esta línea es la clave -->
-        </activity>
+            android:windowSoftInputMode="adjustResize" />
 
+        <!-- Mis Cursos -->
+        <activity
+            android:name=".CoursesActivity"
+            android:exported="false" />
 
     </application>
 

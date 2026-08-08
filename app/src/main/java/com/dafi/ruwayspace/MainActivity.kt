@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.firebase.auth.FirebaseAuth // <-- Importante
 
+
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         // 👇 Fuerza a que la app siempre use el tema claro
@@ -27,6 +28,13 @@ class MainActivity : AppCompatActivity() {
 
         // Asignar el texto dinámicamente con la mano saludando
         tvSaludo.text = "¡Hola, $nombreUsuario! 👋"
+
+        // Agrega esto dentro del onCreate de tu MainActivity:
+        val btnMisCursos = findViewById<LinearLayout>(R.id.btnMisCursos) // Asegúrate de poner el ID correcto de tu tarjeta de cursos en el activity_main.xml
+        btnMisCursos.setOnClickListener {
+            val intent = Intent(this, CoursesActivity::class.java)
+            startActivity(intent)
+        }
 
         // Botón para ir al Tutor IA
         val btnTutorIA = findViewById<LinearLayout>(R.id.btnTutorIA)
