@@ -63,6 +63,9 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
     implementation(platform("com.google.firebase:firebase-bom:34.17.0"))
+    implementation("com.google.firebase:firebase-auth")
+    // Google Sign-In SDK
+    implementation("com.google.android.gms:play-services-auth:21.1.0")
     val roomVersion = "2.7.0"
 
     implementation("androidx.room:room-runtime:$roomVersion")

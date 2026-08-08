@@ -3,8 +3,10 @@ package com.dafi.ruwayspace
 import android.content.Intent
 import android.os.Bundle
 import android.widget.LinearLayout
+import android.widget.TextView // <-- Importante
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import com.google.firebase.auth.FirebaseAuth // <-- Importante
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,7 +16,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Dentro de tu MainActivity.kt
+        // Referencia a tu TextView de saludo (reemplaza 'tvSaludo' si tu ID es diferente en el XML)
+        val tvSaludo = findViewById<TextView>(R.id.tvUserName)
+
+        // Obtener el usuario actual de Firebase Authentication
+        val currentUser = FirebaseAuth.getInstance().currentUser
+
+        // Si hay cuenta de Google, toma su nombre; si no (entró por Quick Start), usa "Estudiante"
+        val nombreUsuario = currentUser?.displayName ?: "Estudiante"
+
+        // Asignar el texto dinámicamente con la mano saludando
+        tvSaludo.text = "¡Hola, $nombreUsuario! 👋"
+
+        // Botón para ir al Tutor IA
         val btnTutorIA = findViewById<LinearLayout>(R.id.btnTutorIA)
         btnTutorIA.setOnClickListener {
             val intent = Intent(this, TutorActivity::class.java)
