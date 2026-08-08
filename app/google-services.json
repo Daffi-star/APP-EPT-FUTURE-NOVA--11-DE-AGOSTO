@@ -1,0 +1,76 @@
+{
+  "project_info": {
+    "project_number": "517625011154",
+    "project_id": "nutrihierro-60b77",
+    "storage_bucket": "nutrihierro-60b77.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:517625011154:android:898becef094016b816860b",
+        "android_client_info": {
+          "package_name": "com.dafi.futurenovaept"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "517625011154-03udseais0gu81dlef0df1juohoh64ui.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dafi.futurenovaept",
+            "certificate_hash": "d170042bc01d9b5ce48db90928b00a3d171d784b"
+          }
+        },
+        {
+          "client_id": "517625011154-p4kc1dprfbdh0ecm9nfp85rmh1qdbmmt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdkTF6n0uno1ZW4NAFCypLSkMQvtDLfeE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "517625011154-p4kc1dprfbdh0ecm9nfp85rmh1qdbmmt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:517625011154:android:099a8969dd23c8c216860b",
+        "android_client_info": {
+          "package_name": "com.dafi.ruwayspace"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "517625011154-p4kc1dprfbdh0ecm9nfp85rmh1qdbmmt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdkTF6n0uno1ZW4NAFCypLSkMQvtDLfeE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "517625011154-p4kc1dprfbdh0ecm9nfp85rmh1qdbmmt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

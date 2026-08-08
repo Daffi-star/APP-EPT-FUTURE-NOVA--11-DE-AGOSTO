@@ -1,11 +1,22 @@
+import java.util.Properties
+import java.io.FileInputStream
+
+val localProperties = Properties().apply {
+    val file = rootProject.file("local.properties")
+    if (file.exists()) load(FileInputStream(file))
+}
+
 plugins {
     alias(libs.plugins.android.application)
+    id("com.google.gms.google-services")
 }
 
 android {
     namespace = "com.dafi.ruwayspace"
-    compileSdk {
-        version = release(37)
+    compileSdk = 37 // 👈 Corregido aquí (número directo)
+
+    buildFeatures {
+        buildConfig = true
     }
 
     defaultConfig {
@@ -16,15 +27,18 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+            // ...
+            // Pon tu clave real aquí entre comillas dobles para probar:
+        buildConfigField("String", "GEMINI_API_KEY", "\"AQ.Ab8RN6If_Jd17vijMa43QZMYnNUthL-oMuM6fBoXcyO-5DMqkw\"")
+
     }
 
     buildTypes {
         release {
-            optimization {
-                enable = false
-            }
+            isMinifyEnabled = false // 👈 Corregido aquí (propiedad estándar)
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -40,4 +54,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
+    implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
+    implementation(platform("com.google.firebase:firebase-bom:34.17.0"))
 }
