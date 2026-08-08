@@ -9,6 +9,7 @@ val localProperties = Properties().apply {
 plugins {
     alias(libs.plugins.android.application)
     id("com.google.gms.google-services")
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -45,6 +46,12 @@ android {
     }
 }
 
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+    }
+}
+
 dependencies {
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.appcompat)
@@ -56,4 +63,9 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
     implementation(platform("com.google.firebase:firebase-bom:34.17.0"))
+    val roomVersion = "2.7.0"
+
+    implementation("androidx.room:room-runtime:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+    ksp("androidx.room:room-compiler:$roomVersion")
 }
