@@ -81,35 +81,41 @@ class CoursesActivity : AppCompatActivity() {
         val etTitle = dialogView.findViewById<EditText>(R.id.etCourseTitle)
         val spinnerStatus = dialogView.findViewById<Spinner>(R.id.spinnerStatus)
         val spinnerDifficulty = dialogView.findViewById<Spinner>(R.id.spinnerDifficulty)
+        val spinnerCategory = dialogView.findViewById<Spinner>(R.id.spinnerCategory) // 🏷️ Categoría
+        val etDueDate = dialogView.findViewById<EditText>(R.id.etDueDate)             // 📅 Fecha Examen
+        val etNotes = dialogView.findViewById<EditText>(R.id.etNotes)                 // 📝 Apuntes
 
         btnSelectPdfRef = dialogView.findViewById(R.id.btnSelectPdf)
         filesContainerRef = dialogView.findViewById(R.id.filesContainer)
 
-        // Cargar archivos previos si estamos editando
         currentFiles.clear()
         if (courseToEdit != null) {
             currentFiles.addAll(courseToEdit.pdfUris)
         }
-
         actualizarListaArchivosEnDialogo()
 
         val statuses = arrayOf("Sin empezar", "En progreso", "Completado")
         val difficulties = arrayOf("Fácil", "Medio", "Difícil")
+        val categories = arrayOf("Teoría", "Práctica", "Simulacro", "Lectura") // Opciones libres
 
         spinnerStatus.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, statuses)
         spinnerDifficulty.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, difficulties)
+        spinnerCategory.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, categories)
 
         if (courseToEdit != null) {
             etTitle.setText(courseToEdit.title)
             spinnerStatus.setSelection(statuses.indexOf(courseToEdit.status).coerceAtLeast(0))
             spinnerDifficulty.setSelection(difficulties.indexOf(courseToEdit.difficulty).coerceAtLeast(0))
+            spinnerCategory.setSelection(categories.indexOf(courseToEdit.categoryTag).coerceAtLeast(0))
+            etDueDate.setText(courseToEdit.dueDate)
+            etNotes.setText(courseToEdit.notes)
         }
 
         btnSelectPdfRef?.setOnClickListener {
             if (currentFiles.size < 5) {
                 pdfPickerLauncher.launch("application/pdf")
             } else {
-                Toast.makeText(this, "Ya agregaste los 5 archivos permitidos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Máximo 5 archivos permitidos", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -122,6 +128,9 @@ class CoursesActivity : AppCompatActivity() {
                 val titulo = etTitle.text.toString()
                 val estadoSeleccionado = spinnerStatus.selectedItem.toString()
                 val dificultadSeleccionada = spinnerDifficulty.selectedItem.toString()
+                val categoriaSeleccionada = spinnerCategory.selectedItem.toString()
+                val fechaExamen = etDueDate.text.toString()
+                val apuntesNotas = etNotes.text.toString()
 
                 if (titulo.isNotBlank()) {
                     lifecycleScope.launch(Dispatchers.IO) {
@@ -135,21 +144,27 @@ class CoursesActivity : AppCompatActivity() {
                             courseDao.insertCourse(
                                 CourseEntity(
                                     title = titulo,
-                                    description = "Dificultad: $dificultadSeleccionada",
+                                    description = "[$categoriaSeleccionada] • $dificultadSeleccionada",
                                     progress = nuevoProgreso,
                                     status = estadoSeleccionado,
                                     difficulty = dificultadSeleccionada,
-                                    pdfUris = currentFiles.toList()
+                                    pdfUris = currentFiles.toList(),
+                                    notes = apuntesNotas,
+                                    dueDate = fechaExamen,
+                                    categoryTag = categoriaSeleccionada
                                 )
                             )
                         } else {
                             val cursoActualizado = courseToEdit.copy(
                                 title = titulo,
-                                description = "Dificultad: $dificultadSeleccionada",
+                                description = "[$categoriaSeleccionada] • $dificultadSeleccionada",
                                 progress = nuevoProgreso,
                                 status = estadoSeleccionado,
                                 difficulty = dificultadSeleccionada,
-                                pdfUris = currentFiles.toList()
+                                pdfUris = currentFiles.toList(),
+                                notes = apuntesNotas,
+                                dueDate = fechaExamen,
+                                categoryTag = categoriaSeleccionada
                             )
                             courseDao.updateCourse(cursoActualizado)
                         }

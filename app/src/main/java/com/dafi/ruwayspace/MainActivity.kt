@@ -2,6 +2,7 @@ package com.dafi.ruwayspace
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView // <-- Importante
 import androidx.appcompat.app.AppCompatActivity
@@ -33,6 +34,14 @@ class MainActivity : AppCompatActivity() {
         val btnMisCursos = findViewById<LinearLayout>(R.id.btnMisCursos) // Asegúrate de poner el ID correcto de tu tarjeta de cursos en el activity_main.xml
         btnMisCursos.setOnClickListener {
             val intent = Intent(this, CoursesActivity::class.java)
+            startActivity(intent)
+        }
+
+        // Asegúrate de reemplazar R.id.btnExams con el ID real que tenga el botón de Exámenes en tu dashboard principal
+        val cardExams = findViewById<View>(R.id.btnExams) // Puede ser CardView o LinearLayout dependiendo de tu diseño
+
+        cardExams.setOnClickListener {
+            val intent = Intent(this, ExamsActivity::class.java)
             startActivity(intent)
         }
 

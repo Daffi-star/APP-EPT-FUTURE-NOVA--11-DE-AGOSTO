@@ -40,6 +40,20 @@
             android:name=".CoursesActivity"
             android:exported="false" />
 
+        <activity android:name=".ExamsActivity" />
+
+        <activity
+            android:name=".AllExamsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".CalendarActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".AllTopicsActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

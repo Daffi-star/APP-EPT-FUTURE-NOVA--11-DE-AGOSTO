@@ -13,21 +13,20 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="📄 Página de Curso"
+            android:text="📝 Nuevo Examen"
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="#1F1F1F"
             android:layout_marginBottom="16dp"/>
 
+        <!-- Título del Examen -->
         <EditText
-            android:id="@+id/etCourseTitle"
+            android:id="@+id/etExamTitle"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:inputType="textPersonName|textCapSentences"
-            android:hint="Título del curso (ej. Literatura)"
-            android:textColor="#1F1F1F"
-            android:textColorHint="#888888"
+            android:hint="Título (ej. Examen de Matemáticas)"
             android:textSize="16sp"
+            android:textColor="#1F1F1F"
             android:background="@android:color/transparent"
             android:paddingBottom="12dp"
             android:layout_marginBottom="8dp"/>
@@ -38,16 +37,7 @@
             android:background="#E0E0E0"
             android:layout_marginBottom="16dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="PROPIEDADES"
-            android:textSize="11sp"
-            android:textStyle="bold"
-            android:textColor="#888888"
-            android:layout_marginBottom="12dp"/>
-
-        <!-- Estado -->
+        <!-- Asignatura -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,125 +47,125 @@
             <TextView
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
-                android:text="⚪ Estado"
-                android:textColor="#555555"
-                android:textStyle="bold"/>
-            <Spinner
-                android:id="@+id/spinnerStatus"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"/>
-        </LinearLayout>
-
-        <!-- Dificultad -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="12dp">
-            <TextView
-                android:layout_width="110dp"
-                android:layout_height="wrap_content"
-                android:text="🎯 Dificultad"
-                android:textColor="#555555"
-                android:textStyle="bold"/>
-            <Spinner
-                android:id="@+id/spinnerDifficulty"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"/>
-        </LinearLayout>
-
-        <!-- Categoría (spinnerCategory) -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="12dp">
-            <TextView
-                android:layout_width="110dp"
-                android:layout_height="wrap_content"
-                android:text="🏷️ Categoría"
-                android:textColor="#555555"
-                android:textStyle="bold"/>
-            <Spinner
-                android:id="@+id/spinnerCategory"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"/>
-        </LinearLayout>
-
-        <!-- Fecha Examen (etDueDate) -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="12dp">
-            <TextView
-                android:layout_width="110dp"
-                android:layout_height="wrap_content"
-                android:text="📅 Examen"
+                android:text="📚 Asignatura"
                 android:textColor="#555555"
                 android:textStyle="bold"/>
             <EditText
-                android:id="@+id/etDueDate"
+                android:id="@+id/etExamSubject"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:hint="Ej. 25/12/2026"
+                android:hint="Ej. Matemáticas"
                 android:textSize="14sp"
-                android:textColor="#1F1F1F"
-                android:inputType="date"/>
+                android:textColor="#1F1F1F"/>
         </LinearLayout>
 
-        <!-- Botón de Materiales PDF -->
+        <!-- Aula -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginBottom="8dp">
+            android:layout_marginBottom="12dp">
             <TextView
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
-                android:text="📎 Materiales"
+                android:text="🚪 Aula"
                 android:textColor="#555555"
                 android:textStyle="bold"/>
-            <Button
-                android:id="@+id/btnSelectPdf"
-                style="?attr/materialButtonOutlinedStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Seleccionar PDF"/>
+            <EditText
+                android:id="@+id/etExamClassroom"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="Ej. Aula 203"
+                android:textSize="14sp"
+                android:textColor="#1F1F1F"/>
         </LinearLayout>
 
+        <!-- Fecha -->
         <LinearLayout
-            android:id="@+id/filesContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="12dp" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
+            <TextView
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:text="📅 Fecha"
+                android:textColor="#555555"
+                android:textStyle="bold"/>
+            <EditText
+                android:id="@+id/etExamDate"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="Ej. 22 de mayo"
+                android:textSize="14sp"
+                android:textColor="#1F1F1F"/>
+        </LinearLayout>
 
-        <!-- Apuntes rápidos (etNotes) -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="📝 APUNTES RÁPIDOS"
-            android:textSize="11sp"
-            android:textStyle="bold"
-            android:textColor="#888888"
-            android:layout_marginBottom="8dp"/>
-
-        <EditText
-            android:id="@+id/etNotes"
+        <!-- Días restantes -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:gravity="top|start"
-            android:hint="Escribe fórmulas, conceptos o notas clave aquí..."
-            android:textSize="14sp"
-            android:textColor="#1F1F1F"
-            android:background="@android:drawable/editbox_background_normal"
-            android:padding="8dp"
-            android:inputType="textMultiLine|textCapSentences"/>
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
+            <TextView
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:text="⏳ Días Restantes"
+                android:textColor="#555555"
+                android:textStyle="bold"/>
+            <EditText
+                android:id="@+id/etExamDaysRemaining"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="Ej. En 5 días"
+                android:textSize="14sp"
+                android:textColor="#1F1F1F"/>
+        </LinearLayout>
+
+        <!-- Personalización: Emoji -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
+            <TextView
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:text="🎨 Emoji"
+                android:textColor="#555555"
+                android:textStyle="bold"/>
+            <EditText
+                android:id="@+id/etExamEmoji"
+                android:layout_width="80dp"
+                android:layout_height="48dp"
+                android:hint="📊"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:maxLength="2"/>
+        </LinearLayout>
+
+        <!-- Personalización: Color de Fondo -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
+            <TextView
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:text="🎨 Color"
+                android:textColor="#555555"
+                android:textStyle="bold"/>
+            <Spinner
+                android:id="@+id/spinnerExamColor"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"/>
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>

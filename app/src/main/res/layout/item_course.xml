@@ -101,5 +101,37 @@
                 android:progressTint="#2196F3" />
         </LinearLayout>
 
+        <!-- Contenedor de Propiedades (Categoría y Fecha) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical">
+
+            <!-- Etiqueta de Categoría -->
+            <TextView
+                android:id="@+id/tvCategoryTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
+                android:background="@drawable/bg_tag"
+                android:textSize="10sp"
+                android:textColor="#555555"
+                android:text="Teoría"
+                android:layout_marginEnd="8dp"/>
+
+            <!-- Fecha Examen -->
+            <TextView
+                android:id="@+id/tvDueDateTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
+                android:textColor="#888888"
+                android:text="📅 25/12/2026"/>
+
+        </LinearLayout>
+
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

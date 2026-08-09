@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    tools:context=".TutorActivity">
 
     <!-- BARRA SUPERIOR MINIMALISTA -->
     <LinearLayout

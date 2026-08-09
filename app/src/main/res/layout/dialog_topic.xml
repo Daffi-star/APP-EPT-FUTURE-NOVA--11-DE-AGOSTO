@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Título principal -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="📚 Nuevo Tema / Tarea"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#1F1F1F"
+            android:layout_marginBottom="20dp"/>
+
+        <!-- Título del tema -->
+        <EditText
+            android:id="@+id/etTopicTitle"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:hint="Título (ej. Funciones cuadráticas)"
+            android:textSize="16sp"
+            android:textColor="#1F1F1F"
+            android:textColorHint="#757575"
+            android:backgroundTint="#6200EE"
+            android:inputType="text"
+            android:autofillHints="name"
+            android:layout_marginBottom="20dp"/>
+
+        <!-- Fila: Categoría / Asignatura -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="📚  Asignatura"
+                android:textSize="14sp"
+                android:textColor="#333333"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/etTopicCategory"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="Ej. Matemáticas"
+                android:textSize="14sp"
+                android:textColor="#1F1F1F"
+                android:textColorHint="#757575"
+                android:backgroundTint="#6200EE"
+                android:inputType="text"
+                android:autofillHints="subject"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="📅 Fecha de entrega / realización"
+            android:textStyle="bold"
+            android:textColor="#1F1F1F"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="4dp"/>
+
+        <EditText
+            android:id="@+id/etTopicDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Selecciona una fecha"
+            android:focusable="false"
+            android:clickable="true"
+            android:textSize="14sp"
+            android:paddingVertical="8dp"/>
+
+        <!-- Fila: Emoji -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="🎨  Emoji"
+                android:textSize="14sp"
+                android:textColor="#333333"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/etTopicEmoji"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="Ej. 📊"
+                android:textSize="14sp"
+                android:textColor="#1F1F1F"
+                android:textColorHint="#757575"
+                android:backgroundTint="#6200EE"
+                android:inputType="text"
+                android:autofillHints="emoji"/>
+        </LinearLayout>
+
+        <!-- Fila: Estado (Spinner) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="📌  Estado"
+                android:textSize="14sp"
+                android:textColor="#333333"
+                android:textStyle="bold"/>
+
+            <Spinner
+                android:id="@+id/spinnerTopicStatus"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"/>
+        </LinearLayout>
+
+        <!-- Sección de Subtareas -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="📌 Subtareas"
+            android:textSize="14sp"
+            android:textColor="#333333"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
+
+            <EditText
+                android:id="@+id/etNewSubtask"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:hint="Ej: Leer capítulo 1"
+                android:textSize="14sp"
+                android:textColor="#1F1F1F"
+                android:textColorHint="#757575"
+                android:backgroundTint="#6200EE"
+                android:inputType="text"/>
+
+            <Button
+                android:id="@+id/btnAddSubtask"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Añadir"
+                android:textSize="12sp"
+                android:layout_marginStart="8dp"/>
+        </LinearLayout>
+
+        <!-- Contenedor dinámico de subtareas -->
+        <LinearLayout
+            android:id="@+id/containerSubtasks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"/>
+
+    </LinearLayout>
+</ScrollView>

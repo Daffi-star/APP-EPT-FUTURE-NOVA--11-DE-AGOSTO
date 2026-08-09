@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    android:paddingVertical="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- Emoji dinámico del examen -->
+        <TextView
+            android:id="@+id/tvExamEmoji"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:background="@drawable/bg_tag"
+            android:text="📊" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvExamTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Examen de Matemáticas"
+                android:textStyle="bold"
+                android:textColor="#1F1F1F"
+                android:textSize="14sp"
+                android:maxLines="2"
+                android:ellipsize="end"/>
+
+            <TextView
+                android:id="@+id/tvExamDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Aula 203 • Miércoles, 22 de mayo"
+                android:textColor="#888888"
+                android:textSize="11sp"
+                android:layout_marginTop="2dp"/>
+        </LinearLayout>
+
+        <!-- Badge de días restantes -->
+        <TextView
+            android:id="@+id/tvDaysRemaining"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="En 5 días"
+            android:textSize="10sp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/bg_badge_blue"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp"/>
+    </LinearLayout>
+
+    <!-- Barra de progreso sutil debajo del examen -->
+    <ProgressBar
+        android:id="@+id/progressBarExam"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:progress="60"
+        android:layout_marginTop="10dp"
+        android:progressTint="#3F51B5"
+        android:background="#E0E0E0"/>
+</LinearLayout>
