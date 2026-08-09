@@ -1,33 +1,26 @@
 package com.dafi.ruwayspace
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.Spinner
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.tabs.TabLayout
 import com.dafi.ruwayspace.data.ExamEntity
 import com.dafi.ruwayspace.data.Topic
 import com.dafi.ruwayspace.model.SubTask
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlin.jvm.java
-import android.app.DatePickerDialog
 import java.text.SimpleDateFormat
 import java.util.*
-
 
 class ExamsActivity : AppCompatActivity() {
 
@@ -50,17 +43,14 @@ class ExamsActivity : AppCompatActivity() {
         cargarTemasDesdeBaseDeDatos()
         cargarExamenesDesdeBaseDeDatos()
 
-        // Botón para ver todos los exámenes
         findViewById<View>(R.id.btnViewAllExams).setOnClickListener {
             startActivity(Intent(this, AllExamsActivity::class.java))
         }
 
-// Botón para ver el calendario
         findViewById<View>(R.id.btnCalendar).setOnClickListener {
             startActivity(Intent(this, CalendarActivity::class.java))
         }
 
-// Botón para ver todos los temas
         findViewById<View>(R.id.btnViewAllTopics).setOnClickListener {
             startActivity(Intent(this, AllTopicsActivity::class.java))
         }
@@ -78,6 +68,17 @@ class ExamsActivity : AppCompatActivity() {
                 }
                 .show()
         }
+    }
+
+    // Función auxiliar para el DatePicker (dd/MM/yyyy)
+    private fun abrirSelectorFecha(etDestino: EditText) {
+        val calendar = Calendar.getInstance()
+        DatePickerDialog(this, { _, year, month, dayOfMonth ->
+            val cal = Calendar.getInstance()
+            cal.set(year, month, dayOfMonth)
+            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            etDestino.setText(sdf.format(cal.time))
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
     }
 
     private fun cargarTemasDesdeBaseDeDatos() {
@@ -112,7 +113,6 @@ class ExamsActivity : AppCompatActivity() {
             tabs.addTab(tabs.newTab().setText("En progreso"))
             tabs.addTab(tabs.newTab().setText("Completado"))
         }
-        tabs.clearOnTabSelectedListeners()
         tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab?.position) {
@@ -165,6 +165,11 @@ class ExamsActivity : AppCompatActivity() {
         val etEmoji = dialogView.findViewById<EditText>(R.id.etExamEmoji)
         val spinnerColor = dialogView.findViewById<Spinner>(R.id.spinnerExamColor)
 
+        // Configuración DatePicker
+        etDate.isFocusable = false
+        etDate.isClickable = true
+        etDate.setOnClickListener { abrirSelectorFecha(etDate) }
+
         val colorNames = arrayOf("Azul Suave", "Verde Suave", "Rosa Suave", "Naranja Suave")
         val colorHexes = arrayOf("#E3F2FD", "#E8F5E9", "#FFEBEE", "#FFF3E0")
         spinnerColor.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, colorNames)
@@ -214,7 +219,6 @@ class ExamsActivity : AppCompatActivity() {
             }
             .setNegativeButton("Cancelar", null)
 
-        // Botón de eliminar (Solo visible si estamos editando)
         if (examToEdit != null) {
             builder.setNeutralButton("Eliminar") { _, _ ->
                 lifecycleScope.launch(Dispatchers.IO) {
@@ -235,32 +239,27 @@ class ExamsActivity : AppCompatActivity() {
         val etTitle = dialogView.findViewById<EditText>(R.id.etTopicTitle)
         val etCategory = dialogView.findViewById<EditText>(R.id.etTopicCategory)
         val etEmoji = dialogView.findViewById<EditText>(R.id.etTopicEmoji)
-        val etDate = dialogView.findViewById<EditText>(R.id.etTopicDate) // 👈 Nuevo campo de fecha
+        val etDate = dialogView.findViewById<EditText>(R.id.etTopicDate)
+        val etTime = dialogView.findViewById<EditText>(R.id.etTopicTime)
+        val etClassroom = dialogView.findViewById<EditText>(R.id.etTopicClassroom)
         val spinnerStatus = dialogView.findViewById<Spinner>(R.id.spinnerTopicStatus)
-
         val etNewSubtask = dialogView.findViewById<EditText>(R.id.etNewSubtask)
         val btnAddSubtask = dialogView.findViewById<Button>(R.id.btnAddSubtask)
         val containerSubtasks = dialogView.findViewById<LinearLayout>(R.id.containerSubtasks)
 
+        // Configuración DatePicker
+        etDate.isFocusable = false
+        etDate.isClickable = true
+        etDate.setOnClickListener { abrirSelectorFecha(etDate) }
+
         val subtasksList = mutableListOf<SubTask>()
-        if (topicToEdit != null) {
-            subtasksList.addAll(topicToEdit.subtasks)
-        }
+        if (topicToEdit != null) subtasksList.addAll(topicToEdit.subtasks)
 
-        // Variable para almacenar la fecha seleccionada
-        var fechaSeleccionada = topicToEdit?.date ?: ""
-
-        // Configurar el selector de fecha al hacer clic en el EditText de fecha
-        etDate.setText(fechaSeleccionada)
-        etDate.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            DatePickerDialog(this, { _, year, month, dayOfMonth ->
-                val cal = Calendar.getInstance()
-                cal.set(year, month, dayOfMonth)
-                val sdf = SimpleDateFormat("d 'de' MMMM", Locale.forLanguageTag("es-ES"))
-                fechaSeleccionada = sdf.format(cal.time)
-                etDate.setText(fechaSeleccionada)
-            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
+        etTime.setOnClickListener {
+            val c = Calendar.getInstance()
+            TimePickerDialog(this, { _, h, m ->
+                etTime.setText(String.format(Locale.getDefault(), "%02d:%02d", h, m))
+            }, c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), true).show()
         }
 
         val estados = arrayOf("Pendiente", "En progreso", "Completado")
@@ -270,123 +269,61 @@ class ExamsActivity : AppCompatActivity() {
             etTitle.setText(topicToEdit.title)
             etCategory.setText(topicToEdit.category)
             etEmoji.setText(topicToEdit.emoji)
+            etDate.setText(topicToEdit.date)
+            etTime.setText(topicToEdit.time)
+            etClassroom.setText(topicToEdit.classroom)
             spinnerStatus.setSelection(estados.indexOf(topicToEdit.status).coerceAtLeast(0))
         } else {
+            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            etDate.setText(sdf.format(Date()))
             etEmoji.setText("📚")
-            // Fecha por defecto o vacía al crear uno nuevo
-            val sdf = SimpleDateFormat("d 'de' MMMM", Locale.forLanguageTag("es-ES"))
-            fechaSeleccionada = sdf.format(Date())
-            etDate.setText(fechaSeleccionada)
         }
 
-        // Función para renderizar las subtareas con CheckBox dentro del diálogo
         fun actualizarVistaSubtareas() {
             containerSubtasks.removeAllViews()
             subtasksList.forEach { subTask ->
-                val checkBox = android.widget.CheckBox(this).apply {
-                    text = subTask.title
-                    isChecked = subTask.isCompleted
-                    textSize = 14f
-                    setOnCheckedChangeListener { _, isChecked ->
-                        subTask.isCompleted = isChecked
-                    }
+                val checkBox = CheckBox(this).apply {
+                    text = subTask.title; isChecked = subTask.isCompleted
+                    setOnCheckedChangeListener { _, b -> subTask.isCompleted = b }
                 }
                 containerSubtasks.addView(checkBox)
             }
         }
-
         actualizarVistaSubtareas()
 
-        // Botón para agregar una nueva subtarea a la lista temporal
         btnAddSubtask.setOnClickListener {
-            val textoSub = etNewSubtask.text.toString().trim()
-            if (textoSub.isNotBlank()) {
-                subtasksList.add(SubTask(textoSub, false))
-                etNewSubtask.text.clear()
-                actualizarVistaSubtareas()
-            }
+            val t = etNewSubtask.text.toString().trim()
+            if (t.isNotBlank()) { subtasksList.add(SubTask(t, false)); etNewSubtask.text.clear(); actualizarVistaSubtareas() }
         }
 
-        val builder = AlertDialog.Builder(this)
+        AlertDialog.Builder(this)
             .setView(dialogView)
-            .setTitle(if (topicToEdit == null) "Nuevo Tema o Tarea" else "Editar Tema")
+            .setTitle(if (topicToEdit == null) "Nuevo Tema" else "Editar Tema")
             .setPositiveButton("Guardar") { _, _ ->
                 val titulo = etTitle.text.toString()
-                val categoria = etCategory.text.toString()
-                val emoji = if (etEmoji.text.isNotBlank()) etEmoji.text.toString() else "📚"
-                val estadoSeleccionado = estados[spinnerStatus.selectedItemPosition]
-
-                val finalSubtasks = if (subtasksList.isEmpty()) {
-                    mutableListOf(SubTask("Estudiar conceptos base", false))
-                } else {
-                    subtasksList
-                }
-
-                val completedCount = finalSubtasks.count { it.isCompleted }
-                val calculatedProgress = if (finalSubtasks.isNotEmpty()) {
-                    (completedCount * 100) / finalSubtasks.size
-                } else {
-                    0
-                }
-
-                val estadoFinal = if (calculatedProgress == 100) "Completado" else estadoSeleccionado
-
                 if (titulo.isNotBlank()) {
                     lifecycleScope.launch(Dispatchers.IO) {
                         if (topicToEdit == null) {
-                            val nuevoTema = Topic(
-                                emoji = emoji,
-                                title = titulo,
-                                category = categoria,
-                                status = estadoFinal,
-                                subtasks = finalSubtasks,
-                                date = fechaSeleccionada // 👈 Guardamos la fecha aquí
-                            )
-                            database.topicDao().insertTopic(nuevoTema)
+                            database.topicDao().insertTopic(Topic(
+                                emoji = etEmoji.text.toString().ifBlank { "📚" },
+                                title = titulo, category = etCategory.text.toString(),
+                                status = estados[spinnerStatus.selectedItemPosition],
+                                subtasks = subtasksList, date = etDate.text.toString(),
+                                classroom = etClassroom.text.toString(), time = etTime.text.toString()
+                            ))
                         } else {
-                            topicToEdit.emoji = emoji
-                            topicToEdit.title = titulo
-                            topicToEdit.category = categoria
-                            topicToEdit.status = estadoFinal
-                            topicToEdit.subtasks = finalSubtasks
-                            topicToEdit.date = fechaSeleccionada // 👈 Actualizamos la fecha aquí
+                            topicToEdit.apply {
+                                emoji = etEmoji.text.toString(); title = titulo; category = etCategory.text.toString()
+                                status = estados[spinnerStatus.selectedItemPosition]; subtasks = subtasksList
+                                date = etDate.text.toString(); time = etTime.text.toString(); classroom = etClassroom.text.toString()
+                            }
                             database.topicDao().updateTopic(topicToEdit)
                         }
-
-                        val listaDb = database.topicDao().getAllTopics()
-                        withContext(Dispatchers.Main) {
-                            topicListOriginal.clear()
-                            topicListOriginal.addAll(listaDb)
-
-                            val tabLayout = findViewById<TabLayout>(R.id.tabLayoutTopics)
-                            val tabSeleccionada = tabLayout.getTabAt(tabLayout.selectedTabPosition)?.text.toString()
-                            filtrarTemas(if (tabSeleccionada.isBlank()) "Todos" else tabSeleccionada)
-
-                            Toast.makeText(this@ExamsActivity, "Tema guardado con éxito", Toast.LENGTH_SHORT).show()
-                        }
+                        cargarTemasDesdeBaseDeDatos()
                     }
-                } else {
-                    Toast.makeText(this, "El título es obligatorio", Toast.LENGTH_SHORT).show()
                 }
             }
             .setNegativeButton("Cancelar", null)
-
-        if (topicToEdit != null) {
-            builder.setNeutralButton("Eliminar") { _, _ ->
-                lifecycleScope.launch(Dispatchers.IO) {
-                    database.topicDao().deleteTopic(topicToEdit)
-                    val listaDb = database.topicDao().getAllTopics()
-                    withContext(Dispatchers.Main) {
-                        topicListOriginal.clear()
-                        topicListOriginal.addAll(listaDb)
-                        val tabLayout = findViewById<TabLayout>(R.id.tabLayoutTopics)
-                        val tabSeleccionada = tabLayout.getTabAt(tabLayout.selectedTabPosition)?.text.toString()
-                        filtrarTemas(if (tabSeleccionada.isBlank()) "Todos" else tabSeleccionada)
-                        Toast.makeText(this@ExamsActivity, "Tema eliminado", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        }
-        builder.show()
+            .show()
     }
 }

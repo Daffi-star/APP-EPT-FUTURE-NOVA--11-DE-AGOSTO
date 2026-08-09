@@ -51,7 +51,8 @@ class CalendarActivity : AppCompatActivity() {
 
         findViewById<ImageView>(R.id.btnBackCalendar).setOnClickListener { finish() }
 
-        val sdf = SimpleDateFormat("d 'de' MMMM", Locale.forLanguageTag("es-ES"))
+        // 💡 Formato numérico estándar (dd/MM/yyyy) para que coincida con el DatePickerDialog
+        val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
         // Cargar fecha actual por defecto
         filtrarPorFecha(sdf.format(Date()))

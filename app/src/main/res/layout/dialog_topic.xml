@@ -63,13 +63,43 @@
                 android:autofillHints="subject"/>
         </LinearLayout>
 
+        <!-- Fila: Aula / Ubicación -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="📍  Aula"
+                android:textSize="14sp"
+                android:textColor="#333333"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/etTopicClassroom"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="Ej. Aula 203"
+                android:textSize="14sp"
+                android:textColor="#1F1F1F"
+                android:textColorHint="#757575"
+                android:backgroundTint="#6200EE"
+                android:inputType="text"
+                android:autofillHints="location"/>
+        </LinearLayout>
+
+        <!-- Fecha -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="📅 Fecha de entrega / realización"
             android:textStyle="bold"
             android:textColor="#1F1F1F"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"/>
 
         <EditText
@@ -80,7 +110,27 @@
             android:focusable="false"
             android:clickable="true"
             android:textSize="14sp"
-            android:paddingVertical="8dp"/>
+            android:paddingVertical="8dp"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Hora -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="⏰ Hora"
+            android:textStyle="bold"
+            android:textColor="#1F1F1F"
+            android:layout_marginBottom="4dp"/>
+
+        <EditText
+            android:id="@+id/etTopicTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ej. 08:00"
+            android:textSize="14sp"
+            android:paddingVertical="8dp"
+            android:backgroundTint="#6200EE"
+            android:layout_marginBottom="16dp"/>
 
         <!-- Fila: Emoji -->
         <LinearLayout
@@ -173,10 +223,10 @@
 
         <!-- Contenedor dinámico de subtareas -->
         <LinearLayout
-            android:id="@+id/containerSubtasks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"/>
+            android:orientation="vertical"
+            android:id="@+id/containerSubtasks"/>
 
     </LinearLayout>
 </ScrollView>

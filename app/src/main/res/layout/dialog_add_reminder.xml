@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="24dp"
+    android:background="@drawable/bg_dialog_rounded"
+    android:orientation="vertical"
+    android:padding="24dp"
+    tools:ignore="HardcodedText,Autofill,VisualLintBounds,TextFieldSize">
+
+    <!-- Título del diálogo -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="Nuevo Recordatorio"
+        android:textColor="@color/text_dark"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <!-- Campo Título -->
+    <EditText
+        android:id="@+id/etTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="14dp"
+        android:minHeight="48dp"
+        android:backgroundTint="@color/purple_main"
+        android:hint="Título (Ej: Examen de Matemáticas)"
+        android:inputType="text"
+        android:textSize="14sp" />
+
+    <!-- Campo Subtítulo -->
+    <EditText
+        android:id="@+id/etSubtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="14dp"
+        android:minHeight="48dp"
+        android:backgroundTint="@color/purple_main"
+        android:hint="Ubicación o detalle (Ej: Aula 205)"
+        android:inputType="text"
+        android:textSize="14sp" />
+
+    <!-- Campo Hora (Selector interactivo) -->
+    <EditText
+        android:id="@+id/etTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="14dp"
+        android:minHeight="48dp"
+        android:backgroundTint="@color/purple_main"
+        android:clickable="true"
+        android:focusable="false"
+        android:hint="Seleccionar Hora"
+        android:inputType="none"
+        android:textSize="14sp" />
+
+    <!-- Campo Indicador de tiempo -->
+    <EditText
+        android:id="@+id/etBadge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:minHeight="48dp"
+        android:backgroundTint="@color/purple_main"
+        android:hint="Indicador (Ej: En 2h o En 3 días)"
+        android:inputType="text"
+        android:textSize="14sp" />
+
+    <!-- Botón de Guardar -->
+    <Button
+        android:id="@+id/btnSaveReminder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="50dp"
+        android:backgroundTint="@color/purple_main"
+        android:text="Guardar Recordatorio"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:cornerRadius="12dp" />
+
+</LinearLayout>

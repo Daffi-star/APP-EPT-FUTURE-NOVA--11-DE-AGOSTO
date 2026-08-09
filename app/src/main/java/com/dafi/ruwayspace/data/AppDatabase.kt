@@ -12,16 +12,19 @@ import com.dafi.ruwayspace.data.CourseDao
 import com.dafi.ruwayspace.data.CourseEntity
 import com.dafi.ruwayspace.data.ExamDao
 import com.dafi.ruwayspace.data.ExamEntity
+import com.dafi.ruwayspace.data.ReminderDao
+import com.dafi.ruwayspace.data.ReminderEntity
 import com.dafi.ruwayspace.data.Topic
 import com.dafi.ruwayspace.data.TopicDao
 
-@Database(entities = [ChatMessageEntity::class, CourseEntity::class, Topic::class, ExamEntity::class], version = 9, exportSchema = false)
+@Database(entities = [ChatMessageEntity::class, CourseEntity::class, Topic::class, ExamEntity::class, ReminderEntity::class], version = 11, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun chatDao(): ChatDao
     abstract fun courseDao(): CourseDao
     abstract fun topicDao(): TopicDao
     abstract fun examDao(): ExamDao // <--- ¡Añadido aquí!
+    abstract fun reminderDao(): ReminderDao // <--- ¡Añadido aquí!
 
     companion object {
         @Volatile

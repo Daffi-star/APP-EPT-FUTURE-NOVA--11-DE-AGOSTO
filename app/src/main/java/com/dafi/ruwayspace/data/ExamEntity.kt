@@ -13,5 +13,6 @@ data class ExamEntity(
     var date: String,          // "22 de mayo"
     var daysRemaining: String, // "En 5 días"
     var iconEmoji: String = "📊", // Emoji elegido por el usuario
-    var cardColor: String = "#E3F2FD" // Color pastel de fondo
+    var cardColor: String = "#E3F2FD", // Color pastel de fondo
+    var time: String = ""
 )

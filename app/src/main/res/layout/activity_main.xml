@@ -90,12 +90,48 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/tvDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="Miércoles, 15 de mayo"
                         android:textColor="#E0D8FF"
                         android:textSize="12sp" />
+
+                    <!-- ESTADO VACÍO (Se muestra cuando no hay tareas) -->
+                    <LinearLayout
+                        android:id="@+id/layout_empty_state"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginBottom="8dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="☕"
+                            android:textSize="36sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="¡Día libre de tareas! ✨"
+                            android:textColor="@color/white"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Aprovecha para descansar o estudiar a tu ritmo"
+                            android:textColor="#E0D8FF"
+                            android:textSize="12sp" />
+                    </LinearLayout>
 
                     <!-- CONTENEDOR DE LA AGENDA (TIMELINE VERTICAL) -->
                     <LinearLayout
@@ -104,8 +140,9 @@
                         android:layout_marginTop="16dp"
                         android:orientation="vertical">
 
-                        <!-- FILA 1: MATEMÁTICAS -->
+                        <!-- FILA 1 -->
                         <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/layout_row_1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingVertical="8dp">
@@ -120,8 +157,7 @@
                                 app:layout_constraintEnd_toEndOf="@id/timeline_dot_1"
                                 app:layout_constraintStart_toStartOf="@id/timeline_dot_1"
                                 app:layout_constraintTop_toBottomOf="@id/timeline_dot_1"
-                                android:layout_marginBottom="-8dp" /> <!-- 👈 Extiende la línea hacia abajo -->
-
+                                android:layout_marginBottom="-8dp" />
 
                             <!-- Hora (Izquierda) -->
                             <TextView
@@ -132,11 +168,11 @@
                                 android:textColor="@color/white"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
-                                app:layout_constraintTop_toBottomOf="@id/timeline_dot_1"
+                                app:layout_constraintBottom_toBottomOf="@id/timeline_dot_1"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="@id/timeline_dot_1" />
 
-                            <!-- El Punto Circular (Encima de la línea) -->
+                            <!-- El Punto Circular -->
                             <ImageView
                                 android:id="@+id/timeline_dot_1"
                                 android:layout_width="14dp"
@@ -146,7 +182,7 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toEndOf="@id/tv_time_1"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:tint="#9575CD" /> <!-- Color Morado del punto -->
+                                app:tint="#9575CD" />
 
                             <!-- Contenedor de Textos (Derecha) -->
                             <LinearLayout
@@ -160,6 +196,7 @@
                                 app:layout_constraintTop_toTopOf="parent">
 
                                 <TextView
+                                    android:id="@+id/tv_title_1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Matemáticas"
@@ -168,6 +205,7 @@
                                     android:textStyle="bold" />
 
                                 <TextView
+                                    android:id="@+id/tv_classroom_1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Aula 203"
@@ -177,8 +215,9 @@
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <!-- FILA 2: EXAMEN DE HISTORIA -->
+                        <!-- FILA 2 -->
                         <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/layout_row_2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingVertical="8dp">
@@ -219,7 +258,7 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toEndOf="@id/tv_time_2"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:tint="#F06292" /> <!-- Color Rosa/Rojo -->
+                                app:tint="#F06292" />
 
                             <!-- Textos -->
                             <LinearLayout
@@ -233,6 +272,7 @@
                                 app:layout_constraintTop_toTopOf="parent">
 
                                 <TextView
+                                    android:id="@+id/tv_title_2"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Examen de Historia"
@@ -241,6 +281,7 @@
                                     android:textStyle="bold" />
 
                                 <TextView
+                                    android:id="@+id/tv_classroom_2"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Aula 205"
@@ -250,8 +291,9 @@
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <!-- FILA 3: PRÁCTICA DE LABORATORIO -->
+                        <!-- FILA 3 -->
                         <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/layout_row_3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingVertical="8dp">
@@ -291,7 +333,7 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toEndOf="@id/tv_time_3"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:tint="#FFD54F" /> <!-- Color Amarillo -->
+                                app:tint="#FFD54F" />
 
                             <!-- Textos -->
                             <LinearLayout
@@ -305,6 +347,7 @@
                                 app:layout_constraintTop_toTopOf="parent">
 
                                 <TextView
+                                    android:id="@+id/tv_title_3"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Práctica de Laboratorio"
@@ -313,6 +356,7 @@
                                     android:textStyle="bold" />
 
                                 <TextView
+                                    android:id="@+id/tv_classroom_3"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Laboratorio 1"
@@ -341,6 +385,7 @@
                         app:strokeWidth="0dp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+            <!-- FIN TARJETA MORADA "TU DÍA DE HOY" -->
 
             <!-- 3. METRICAS (3 TARJETAS EN FILA) -->
             <LinearLayout
@@ -350,7 +395,7 @@
                 android:baselineAligned="false"
                 android:orientation="horizontal">
 
-                <!-- Métrico 1 -->
+                <!-- Métrico 1: Exámenes -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -360,40 +405,17 @@
                     app:cardCornerRadius="16dp"
                     app:cardElevation="2dp"
                     app:strokeWidth="0dp">
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:padding="10dp">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="28dp"
-                            android:text="Próximos exámenes"
-                            android:textColor="#666666"
-                            android:textSize="10sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="2"
-                            android:textColor="@color/text_dark"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="En 5 días"
-                            android:textColor="@color/accent_pink"
-                            android:textSize="10sp"
-                            android:textStyle="bold" />
+                        <TextView android:layout_width="match_parent" android:layout_height="28dp" android:text="Próximos exámenes" android:textColor="#666666" android:textSize="10sp" />
+                        <TextView android:id="@+id/tvExamCount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="2" android:textColor="@color/text_dark" android:textSize="20sp" android:textStyle="bold" />
+                        <TextView android:id="@+id/tvExamSubtitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="En 5 días" android:textColor="@color/accent_pink" android:textSize="10sp" android:textStyle="bold" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Métrico 2 -->
                 <!-- Métrico 2: Tareas pendientes -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
@@ -404,41 +426,20 @@
                     app:cardCornerRadius="16dp"
                     app:cardElevation="2dp"
                     app:strokeWidth="0dp">
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:padding="10dp">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="28dp"
-                            android:text="Tareas pendientes"
-                            android:textColor="#666666"
-                            android:textSize="10sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="5"
-                            android:textColor="@color/text_dark"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="Por hacer"
-                            android:textColor="@color/purple_main"
-                            android:textSize="10sp"
-                            android:textStyle="bold" />
+                        <TextView android:layout_width="match_parent" android:layout_height="28dp" android:text="Tareas pendientes" android:textColor="#666666" android:textSize="10sp" />
+                        <TextView android:id="@+id/tvTaskCount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="5" android:textColor="@color/text_dark" android:textSize="20sp" android:textStyle="bold" />
+                        <TextView android:id="@+id/tvTaskSubtitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Por hacer" android:textColor="@color/purple_main" android:textSize="10sp" android:textStyle="bold" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Métrico 3 -->
+                <!-- Métrico 3: Recordatorios (Hacemos clicable esta tarjeta) -->
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardRecordatorios"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
@@ -446,7 +447,10 @@
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="2dp"
-                    app:strokeWidth="0dp">
+                    app:strokeWidth="0dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -462,6 +466,7 @@
                             android:textSize="10sp" />
 
                         <TextView
+                            android:id="@+id/tvReminderCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="3"
@@ -470,6 +475,7 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tvReminderSubtitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"

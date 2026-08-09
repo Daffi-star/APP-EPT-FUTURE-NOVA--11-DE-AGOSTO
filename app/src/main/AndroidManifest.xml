@@ -54,6 +54,11 @@
             android:name=".AllTopicsActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".AvisosActivity"
+            android:exported="false"
+            android:theme="@style/Theme.RuwaySpace" /> <!-- Asegúrate de usar el tema de tu app -->
+
     </application>
 
 </manifest>

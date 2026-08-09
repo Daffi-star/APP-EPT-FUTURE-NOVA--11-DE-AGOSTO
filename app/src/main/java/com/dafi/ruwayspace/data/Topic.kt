@@ -15,6 +15,8 @@ data class Topic(
     var category: String,
     var status: String,
     var date: String = "",
+    var time: String = "",     // 👈 Nuevo campo de hora
+    var classroom: String = "",
     @TypeConverters(Converters::class)
     var subtasks: MutableList<SubTask>
 ) {
