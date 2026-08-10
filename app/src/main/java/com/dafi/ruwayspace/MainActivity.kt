@@ -42,6 +42,10 @@ class MainActivity : AppCompatActivity() {
 
         configurarFechaActual()
 
+        findViewById<View>(R.id.nav_cultura)?.setOnClickListener {
+            startActivity(Intent(this, CulturalActivity::class.java))
+        }
+
         findViewById<View>(R.id.btnIrAlGrupo)?.setOnClickListener {
             val intent = Intent(this, MyGroupsActivity::class.java)
             startActivity(intent)

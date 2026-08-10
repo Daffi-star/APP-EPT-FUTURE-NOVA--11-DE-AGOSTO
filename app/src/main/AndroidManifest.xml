@@ -68,8 +68,14 @@
 
         <activity android:name=".GroupChatActivity" android:exported="false" />
 
+        <activity android:name=".CulturalActivity" android:exported="false" />
+
         <activity
             android:name=".MyGroupsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".EfemeridesActivity"
             android:exported="false" />
 
     </application>
