@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@android:color/white">
+
+    <!-- Título Principal -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Panel Grupal"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#1A1A1A" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Únete a una sala existente o crea una nueva para estudiar."
+        android:textSize="13sp"
+        android:textColor="#757575"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="20dp" />
+
+    <!-- SECCIÓN 1: Unirse a un grupo -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¿Tienes un código?"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:textColor="#6200EE" />
+
+    <EditText
+        android:id="@+id/etJoinCode"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="Código de sala (Ej: BIODAT2026)"
+        android:background="@drawable/bg_input_rounded"
+        android:paddingHorizontal="16dp"
+        android:textSize="14sp"
+        android:inputType="textCapCharacters"
+        android:layout_marginTop="8dp" />
+
+    <Button
+        android:id="@+id/btnJoinRoom"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="Unirme al Grupo"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:backgroundTint="#6200EE"
+        android:layout_marginTop="8dp"
+        style="?attr/materialButtonOutlinedStyle"
+        app:cornerRadius="12dp" />
+
+    <!-- Separador -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E0E0E0"
+        android:layout_marginVertical="20dp" />
+
+    <!-- SECCIÓN 2: Crear un grupo nuevo -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¿Quieres crear tu propio grupo?"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:textColor="#6200EE" />
+
+    <EditText
+        android:id="@+id/etNewGroupName"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="Nombre del grupo (Ej: Física Avanzada)"
+        android:background="@drawable/bg_input_rounded"
+        android:paddingHorizontal="16dp"
+        android:textSize="14sp"
+        android:layout_marginTop="8dp" />
+
+    <EditText
+        android:id="@+id/etNewGroupCode"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="Crea un código de acceso (Ej: FIS2026)"
+        android:background="@drawable/bg_input_rounded"
+        android:paddingHorizontal="16dp"
+        android:textSize="14sp"
+        android:inputType="textCapCharacters"
+        android:layout_marginTop="8dp" />
+
+    <Button
+        android:id="@+id/btnCreateRoom"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="Crear y Entrar"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:backgroundTint="#3700B3"
+        android:layout_marginTop="12dp"
+        app:cornerRadius="12dp" />
+
+</LinearLayout>

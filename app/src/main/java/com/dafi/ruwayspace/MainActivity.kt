@@ -15,6 +15,13 @@ import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import android.widget.EditText
+import kotlin.jvm.java
+import android.view.LayoutInflater
+import android.widget.Button
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,8 +42,13 @@ class MainActivity : AppCompatActivity() {
 
         configurarFechaActual()
 
+        findViewById<View>(R.id.btnIrAlGrupo)?.setOnClickListener {
+            val intent = Intent(this, MyGroupsActivity::class.java)
+            startActivity(intent)
+        }
+
         // 💡 Abrir la pantalla de Avisos al presionar el botón de la barra inferior
-        findViewById<View>(R.id.nav_notifications)?.setOnClickListener {
+        findViewById<View>(R.id.nav_avisos)?.setOnClickListener {
             startActivity(Intent(this, AvisosActivity::class.java))
         }
 
@@ -77,6 +89,7 @@ class MainActivity : AppCompatActivity() {
         cargarAgendaDeHoy()
         cargarDatosTarjetasResumen()
         actualizarContadorRecordatorios()
+        cargarPanelGrupal()
     }
 
     private fun cargarDatosTarjetasResumen() {
@@ -194,5 +207,101 @@ class MainActivity : AppCompatActivity() {
                 findViewById<TextView>(R.id.tvReminderCount)?.text = totalHoy.toString()
             }
         }
+    }
+
+    private fun mostrarDialogoCodigoSala() {
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_group_manager, null)
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .create()
+
+        // Fondo transparente para que se noten las esquinas redondeadas de tu diseño si las personalizas
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        val etJoinCode = dialogView.findViewById<EditText>(R.id.etJoinCode)
+        val btnJoinRoom = dialogView.findViewById<Button>(R.id.btnJoinRoom)
+
+        val etNewGroupName = dialogView.findViewById<EditText>(R.id.etNewGroupName)
+        val etNewGroupCode = dialogView.findViewById<EditText>(R.id.etNewGroupCode)
+        val btnCreateRoom = dialogView.findViewById<Button>(R.id.btnCreateRoom)
+
+        val db = FirebaseFirestore.getInstance()
+
+        // OPCIÓN 1: Unirse a sala existente
+        btnJoinRoom.setOnClickListener {
+            val code = etJoinCode.text.toString().trim().uppercase()
+            if (code.isNotEmpty()) {
+                db.collection("rooms").document(code).get().addOnSuccessListener { document ->
+                    if (document.exists()) {
+                        dialog.dismiss()
+                        val intent = Intent(this, GroupChatActivity::class.java).apply {
+                            putExtra("ROOM_CODE", code)
+                        }
+                        startActivity(intent)
+                    } else {
+                        Toast.makeText(this, "El código de sala no existe", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } else {
+                etJoinCode.error = "Ingresa un código"
+            }
+        }
+
+        // OPCIÓN 2: Crear un grupo nuevo
+        btnCreateRoom.setOnClickListener {
+            val name = etNewGroupName.text.toString().trim()
+            val code = etNewGroupCode.text.toString().trim().uppercase()
+
+            if (name.isNotEmpty() && code.isNotEmpty()) {
+                val roomData = hashMapOf(
+                    "groupName" to name,
+                    "roomCode" to code,
+                    "createdAt" to System.currentTimeMillis()
+                )
+
+                db.collection("rooms").document(code).set(roomData)
+                    .addOnSuccessListener {
+                        dialog.dismiss()
+                        Toast.makeText(this, "¡Grupo creado con éxito!", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this, GroupChatActivity::class.java).apply {
+                            putExtra("ROOM_CODE", code)
+                        }
+                        startActivity(intent)
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(this, "Error al crear el grupo", Toast.LENGTH_SHORT).show()
+                    }
+            } else {
+                Toast.makeText(this, "Completa todos los campos para crear el grupo", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        dialog.show()
+    }
+
+    private fun cargarPanelGrupal() {
+        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val db = FirebaseFirestore.getInstance()
+
+        // Leemos directamente de los grupos del usuario actual
+        db.collection("users").document(currentUserId)
+            .collection("my_rooms")
+            .limit(1) // Tomamos el primer grupo de la lista
+            .get()
+            .addOnSuccessListener { documents ->
+                if (!documents.isEmpty) {
+                    val doc = documents.documents[0]
+                    val groupName = doc.getString("groupName") ?: "Grupo de Estudio"
+
+                    // Actualizamos el TextView del panel con el nombre real
+                    findViewById<TextView>(R.id.tvGroupDescription).text = groupName
+                } else {
+                    findViewById<TextView>(R.id.tvGroupDescription).text = "Aún no te has unido a ningún grupo"
+                }
+            }
+            .addOnFailureListener {
+                findViewById<TextView>(R.id.tvGroupDescription).text = "Panel Grupal"
+            }
     }
 }

@@ -66,6 +66,12 @@
 
         <activity android:name=".SettingsActivity" android:exported="false" />
 
+        <activity android:name=".GroupChatActivity" android:exported="false" />
+
+        <activity
+            android:name=".MyGroupsActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

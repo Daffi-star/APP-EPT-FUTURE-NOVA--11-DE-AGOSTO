@@ -43,6 +43,12 @@ class ExamsActivity : AppCompatActivity() {
         cargarTemasDesdeBaseDeDatos()
         cargarExamenesDesdeBaseDeDatos()
 
+        // Dentro de onCreate en ExamsActivity.kt
+        val btnBack = findViewById<View>(R.id.btnBack)
+        btnBack.setOnClickListener {
+            finish() // Esto cierra la actividad actual y regresa a la anterior
+        }
+
         findViewById<View>(R.id.btnViewAllExams).setOnClickListener {
             startActivity(Intent(this, AllExamsActivity::class.java))
         }
