@@ -21,6 +21,10 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 
 class AvisosActivity : AppCompatActivity() {
 
@@ -31,9 +35,21 @@ class AvisosActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_avisos)
 
+        findViewById<ImageView>(R.id.btnSettings).setOnClickListener {
+            val intent = Intent(this, SettingsActivity::class.java)
+            startActivity(intent)
+        }
+
+        // Pide permiso de notificaciones en tiempo de ejecución (Android 13+)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 101)
+            }
+        }
+
         findViewById<ImageView>(R.id.btnBack).setOnClickListener { finish() }
 
-        // Botón flotante para abrir diálogo de nueva alarma
+        // Botón flotante para abrir diálogo de nueva alarma (vacío)
         findViewById<FloatingActionButton>(R.id.fabAddReminder).setOnClickListener {
             mostrarDialogoAgregar()
         }
@@ -109,11 +125,97 @@ class AvisosActivity : AppCompatActivity() {
             cardView.findViewById<TextView>(R.id.tvReminderSubtitle).text = "${reminder.subtitle} • ${reminder.time}"
             cardView.findViewById<TextView>(R.id.tvReminderBadge).text = reminder.timeRemaining
 
+            // Al hacer clic en la tarjeta, abrimos el diálogo para editar este recordatorio específico
+            // Al hacer clic en la tarjeta, mostramos opciones para Editar o Eliminar
+            cardView.setOnClickListener {
+                val opciones = arrayOf("Editar recordatorio", "Eliminar recordatorio")
+                AlertDialog.Builder(this)
+                    .setTitle(reminder.title)
+                    .setItems(opciones) { _, which ->
+                        when (which) {
+                            0 -> {
+                                // Opción 0: Editar
+                                mostrarDialogoAgregar(reminder)
+                            }
+                            1 -> {
+                                // Opción 1: Eliminar
+                                eliminarRecordatorio(reminder)
+                            }
+                        }
+                    }
+                    .show()
+            }
+
             container.addView(cardView)
         }
     }
 
-    private fun mostrarDialogoAgregar() {
+    private fun eliminarRecordatorio(reminder: ReminderEntity) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            // 1. Cancelar la alarma activa en el AlarmManager para que no suene
+            val intent = Intent(this@AvisosActivity, ReminderReceiver::class.java)
+            val pendingIntent = PendingIntent.getBroadcast(
+                this@AvisosActivity,
+                reminder.id,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+            val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            alarmManager.cancel(pendingIntent)
+
+            // 2. Borrar de la base de datos Room
+            database.reminderDao().deleteReminder(reminder.id)
+
+            // 3. Recargar la interfaz en el hilo principal
+            withContext(Dispatchers.Main) {
+                Toast.makeText(this@AvisosActivity, "Recordatorio eliminado", Toast.LENGTH_SHORT).show()
+                cargarRecordatorios()
+            }
+        }
+    }
+
+    private fun programarAlarma(reminderId: Int, title: String, timeStr: String) {
+        try {
+            val parts = timeStr.split(":")
+            if (parts.size < 2) return
+            val hour = parts[0].toInt()
+            val minute = parts[1].toInt()
+
+            val calendar = Calendar.getInstance().apply {
+                set(Calendar.HOUR_OF_DAY, hour)
+                set(Calendar.MINUTE, minute)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
+            }
+
+            if (calendar.timeInMillis <= System.currentTimeMillis()) {
+                calendar.add(Calendar.DAY_OF_YEAR, 1)
+            }
+
+            val intent = Intent(this, ReminderReceiver::class.java).apply {
+                putExtra("REMINDER_ID", reminderId)
+                putExtra("REMINDER_TITLE", title)
+            }
+
+            val pendingIntent = PendingIntent.getBroadcast(
+                this,
+                reminderId,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+
+            val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                calendar.timeInMillis,
+                pendingIntent
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun mostrarDialogoAgregar(reminderToEdit: ReminderEntity? = null) {
         val dialogView = layoutInflater.inflate(R.layout.dialog_add_reminder, null)
         val dialog = AlertDialog.Builder(this).setView(dialogView).create()
 
@@ -122,6 +224,14 @@ class AvisosActivity : AppCompatActivity() {
         val etTime = dialogView.findViewById<EditText>(R.id.etTime)
         val etBadge = dialogView.findViewById<EditText>(R.id.etBadge)
         val btnSave = dialogView.findViewById<Button>(R.id.btnSaveReminder)
+
+        // Si estamos editando, rellenamos los campos con los datos actuales
+        reminderToEdit?.let {
+            etTitle.setText(it.title)
+            etSubtitle.setText(it.subtitle)
+            etTime.setText(it.time)
+            etBadge.setText(it.timeRemaining)
+        }
 
         // Configurar el selector de hora al hacer clic en el campo etTime
         etTime.setOnClickListener {
@@ -148,13 +258,24 @@ class AvisosActivity : AppCompatActivity() {
             val time = etTime.text.toString().trim()
             val badge = etBadge.text.toString().trim()
 
-            if (title.isNotEmpty()) {
+            if (title.isNotEmpty() && time.isNotEmpty()) {
                 lifecycleScope.launch(Dispatchers.IO) {
                     val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                     val fechaHoy = sdf.format(Date())
 
-                    database.reminderDao().insertReminder(
-                        ReminderEntity(
+                    val finalId: Int
+
+                    if (reminderToEdit != null) {
+                        finalId = reminderToEdit.id
+                        val updatedReminder = reminderToEdit.copy(
+                            title = title,
+                            subtitle = subtitle,
+                            time = time,
+                            timeRemaining = if (badge.isNotEmpty()) badge else reminderToEdit.timeRemaining
+                        )
+                        database.reminderDao().updateReminder(updatedReminder)
+                    } else {
+                        val newReminder = ReminderEntity(
                             title = title,
                             subtitle = subtitle,
                             time = time,
@@ -163,19 +284,47 @@ class AvisosActivity : AppCompatActivity() {
                             category = "General",
                             status = "Pendiente"
                         )
-                    )
+                        // Guardamos y obtenemos el ID generado
+                        finalId = database.reminderDao().insertReminder(newReminder).toInt()
+                    }
+
+                    // Programamos la alarma nativa del sistema
+                    programarAlarma(finalId, title, time)
 
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(this@AvisosActivity, "¡Alarma agregada!", Toast.LENGTH_SHORT).show()
+                        val mensaje = if (reminderToEdit != null) "¡Recordatorio actualizado!" else "¡Alarma programada!"
+                        Toast.makeText(this@AvisosActivity, mensaje, Toast.LENGTH_SHORT).show()
                         dialog.dismiss()
                         cargarRecordatorios()
                     }
                 }
             } else {
-                Toast.makeText(this, "Escribe al menos un título", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Escribe un título y selecciona una hora", Toast.LENGTH_SHORT).show()
             }
         }
 
         dialog.show()
+    }
+
+    private fun confirmarLimpieza(mensaje: String, tipo: String) {
+        AlertDialog.Builder(this)
+            .setTitle("Confirmar")
+            .setMessage(mensaje)
+            .setPositiveButton("Sí, borrar") { _, _ ->
+                lifecycleScope.launch(Dispatchers.IO) {
+                    if (tipo == "completed") {
+                        database.reminderDao().deleteCompleted()
+                    } else {
+                        database.reminderDao().deleteAll()
+                    }
+
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@AvisosActivity, "Limpieza realizada", Toast.LENGTH_SHORT).show()
+                        cargarRecordatorios() // Recargamos la lista vacía
+                    }
+                }
+            }
+            .setNegativeButton("Cancelar", null)
+            .show()
     }
 }

@@ -46,6 +46,7 @@
             </LinearLayout>
 
             <ImageView
+                android:id="@+id/btnSettings"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:layout_alignParentEnd="true"

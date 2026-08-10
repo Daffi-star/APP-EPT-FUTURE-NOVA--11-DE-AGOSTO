@@ -76,6 +76,7 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         cargarAgendaDeHoy()
         cargarDatosTarjetasResumen()
+        actualizarContadorRecordatorios()
     }
 
     private fun cargarDatosTarjetasResumen() {
@@ -94,10 +95,6 @@ class MainActivity : AppCompatActivity() {
             // 2. Tareas pendientes
             val tareasPendientes = topics.count { it.status.equals("Pendiente", ignoreCase = true) }
 
-            // 3. Recordatorios de hoy (Tareas + Exámenes cuya fecha coincida con hoy)
-            val recordatoriosHoy = topics.count { it.date.trim().equals(fechaHoy, ignoreCase = true) } +
-                    exams.count { it.date.trim().equals(fechaHoy, ignoreCase = true) }
-
             withContext(Dispatchers.Main) {
                 // Tarjeta Exámenes
                 findViewById<TextView>(R.id.tvExamCount)?.text = totalExamenes.toString()
@@ -106,10 +103,6 @@ class MainActivity : AppCompatActivity() {
                 // Tarjeta Tareas pendientes
                 findViewById<TextView>(R.id.tvTaskCount)?.text = tareasPendientes.toString()
                 findViewById<TextView>(R.id.tvTaskSubtitle)?.text = "Por hacer"
-
-                // Tarjeta Recordatorios
-                findViewById<TextView>(R.id.tvReminderCount)?.text = recordatoriosHoy.toString()
-                findViewById<TextView>(R.id.tvReminderSubtitle)?.text = "Hoy"
             }
         }
     }
@@ -185,6 +178,20 @@ class MainActivity : AppCompatActivity() {
                 classroom3?.text = eventos[2].aula.ifBlank { "Sin aula" }
             } else {
                 row3?.visibility = View.INVISIBLE
+            }
+        }
+    }
+
+    private fun actualizarContadorRecordatorios() {
+        // Formato exacto "dd/MM/yyyy" tal como lo manejas en ReminderEntity
+        val formatoFecha = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val fechaHoy = formatoFecha.format(Date())
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            val totalHoy = AppDatabase.getDatabase(this@MainActivity).reminderDao().getRemindersCountForToday(fechaHoy)
+
+            withContext(Dispatchers.Main) {
+                findViewById<TextView>(R.id.tvReminderCount)?.text = totalHoy.toString()
             }
         }
     }

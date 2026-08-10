@@ -72,7 +72,7 @@
             </RelativeLayout>
 
             <!-- TARJETA CONTENEDORA GRANDE (Estilo Imagen 2) -->
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="16dp"
@@ -106,7 +106,7 @@
                         android:textSize="14sp"
                         android:textStyle="bold"/>
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- SECCIÓN: Temas por estudiar -->
             <RelativeLayout
