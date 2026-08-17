@@ -227,14 +227,23 @@ class ExamsActivity : AppCompatActivity() {
 
         if (examToEdit != null) {
             builder.setNeutralButton("Eliminar") { _, _ ->
-                lifecycleScope.launch(Dispatchers.IO) {
-                    database.examDao().deleteExam(examToEdit)
-                    val listaDb = database.examDao().getAllExams()
-                    withContext(Dispatchers.Main) {
-                        examList.clear(); examList.addAll(listaDb); examAdapter.notifyDataSetChanged()
-                        Toast.makeText(this@ExamsActivity, "Examen eliminado", Toast.LENGTH_SHORT).show()
+                // 1. Aquí abrimos la alerta de confirmación
+                AlertDialog.Builder(this)
+                    .setTitle("Eliminar examen")
+                    .setMessage("¿Estás seguro de que deseas eliminar '${examToEdit.title}'? Esta acción no se puede deshacer.")
+                    // 2. Si el usuario dice "Sí", recién aquí borramos
+                    .setPositiveButton("Sí, eliminar") { _, _ ->
+                        lifecycleScope.launch(Dispatchers.IO) {
+                            database.examDao().deleteExam(examToEdit)
+                            val listaDb = database.examDao().getAllExams()
+                            withContext(Dispatchers.Main) {
+                                examList.clear(); examList.addAll(listaDb); examAdapter.notifyDataSetChanged()
+                                Toast.makeText(this@ExamsActivity, "Examen eliminado", Toast.LENGTH_SHORT).show()
+                            }
+                        }
                     }
-                }
+                    .setNegativeButton("Cancelar", null)
+                    .show()
             }
         }
         builder.show()
@@ -302,7 +311,7 @@ class ExamsActivity : AppCompatActivity() {
             if (t.isNotBlank()) { subtasksList.add(SubTask(t, false)); etNewSubtask.text.clear(); actualizarVistaSubtareas() }
         }
 
-        AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(this)
             .setView(dialogView)
             .setTitle(if (topicToEdit == null) "Nuevo Tema" else "Editar Tema")
             .setPositiveButton("Guardar") { _, _ ->
@@ -326,10 +335,36 @@ class ExamsActivity : AppCompatActivity() {
                             database.topicDao().updateTopic(topicToEdit)
                         }
                         cargarTemasDesdeBaseDeDatos()
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(this@ExamsActivity, "Tema guardado", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             }
             .setNegativeButton("Cancelar", null)
-            .show()
+
+        // 🗑️ CORRECCIÓN AQUÍ: Usamos topicToEdit en lugar de examToEdit
+        if (topicToEdit != null) {
+            builder.setNeutralButton("Eliminar") { _, _ ->
+                // 1. Abrimos la alerta de confirmación
+                AlertDialog.Builder(this)
+                    .setTitle("Eliminar tema")
+                    .setMessage("¿Estás seguro de que deseas eliminar '${topicToEdit.title}'?")
+                    // 2. Si el usuario confirma, borramos
+                    .setPositiveButton("Sí, eliminar") { _, _ ->
+                        lifecycleScope.launch(Dispatchers.IO) {
+                            database.topicDao().deleteTopic(topicToEdit)
+                            cargarTemasDesdeBaseDeDatos()
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(this@ExamsActivity, "Tema eliminado", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                    .setNegativeButton("Cancelar", null)
+                    .show()
+            }
+        }
+
+        builder.show()
     }
 }

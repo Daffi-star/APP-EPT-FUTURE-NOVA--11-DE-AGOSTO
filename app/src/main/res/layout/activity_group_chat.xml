@@ -28,13 +28,24 @@
 
         <TextView
             android:id="@+id/tvChatTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Sala Grupal"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="#1A1A1A"
             android:layout_marginStart="16dp" />
+
+        <!-- Botón para salir del grupo -->
+        <ImageView
+            android:id="@+id/btnExitGroup"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_exit"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="#D32F2F"
+            android:contentDescription="Salir del grupo" />
     </LinearLayout>
 
     <!-- Lista de Mensajes -->
@@ -70,8 +81,8 @@
 
         <ImageButton
             android:id="@+id/btnSend"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:src="@android:drawable/ic_menu_send"
             android:background="?attr/selectableItemBackgroundBorderless"
             app:tint="#6200EE"

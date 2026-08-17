@@ -1,6 +1,7 @@
 package com.dafi.ruwayspace
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
@@ -19,9 +20,11 @@ import android.widget.EditText
 import kotlin.jvm.java
 import android.view.LayoutInflater
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.google.firebase.firestore.FirebaseFirestore
+import android.util.Base64
 
 class MainActivity : AppCompatActivity() {
 
@@ -51,6 +54,14 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // Dentro de tu onCreate() en MainActivity.kt
+        val ivProfileSettings = findViewById<ImageView>(R.id.ivProfileSettings)
+
+        ivProfileSettings.setOnClickListener {
+            val intent = Intent(this, SettingsProfileActivity::class.java)
+            startActivity(intent)
+        }
+
         // 💡 Abrir la pantalla de Avisos al presionar el botón de la barra inferior
         findViewById<View>(R.id.nav_avisos)?.setOnClickListener {
             startActivity(Intent(this, AvisosActivity::class.java))
@@ -74,6 +85,23 @@ class MainActivity : AppCompatActivity() {
         // Botón para ir al Tutor IA
         findViewById<LinearLayout>(R.id.btnTutorIA).setOnClickListener {
             startActivity(Intent(this, TutorActivity::class.java))
+        }
+
+        cargarFotoEnDashboard()
+    }
+
+    private fun cargarFotoEnDashboard() {
+        val user = FirebaseAuth.getInstance().currentUser ?: return
+        val db = FirebaseFirestore.getInstance()
+        val ivProfile = findViewById<ImageView>(R.id.ivProfileSettings)
+
+        db.collection("users").document(user.uid).get().addOnSuccessListener { doc ->
+            val base64String = doc.getString("photoBase64")
+            if (!base64String.isNullOrEmpty()) {
+                val decodedBytes = Base64.decode(base64String, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+                ivProfile.setImageBitmap(bitmap)
+            }
         }
     }
 

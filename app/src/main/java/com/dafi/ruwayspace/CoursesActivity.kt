@@ -76,14 +76,14 @@ class CoursesActivity : AppCompatActivity() {
         cargarCursosDesdeDb()
     }
 
-    private fun mostrarDialogoNotion(courseToEdit: CourseEntity?) {
+    private fun mostrarDialogoNotion(courseToEdit: CourseEntity?){
         val dialogView = layoutInflater.inflate(R.layout.dialog_notion_course, null)
         val etTitle = dialogView.findViewById<EditText>(R.id.etCourseTitle)
         val spinnerStatus = dialogView.findViewById<Spinner>(R.id.spinnerStatus)
         val spinnerDifficulty = dialogView.findViewById<Spinner>(R.id.spinnerDifficulty)
-        val spinnerCategory = dialogView.findViewById<Spinner>(R.id.spinnerCategory) // 🏷️ Categoría
-        val etDueDate = dialogView.findViewById<EditText>(R.id.etDueDate)             // 📅 Fecha Examen
-        val etNotes = dialogView.findViewById<EditText>(R.id.etNotes)                 // 📝 Apuntes
+        val spinnerCategory = dialogView.findViewById<Spinner>(R.id.spinnerCategory)
+        val etDueDate = dialogView.findViewById<EditText>(R.id.etDueDate)
+        val etNotes = dialogView.findViewById<EditText>(R.id.etNotes)
 
         btnSelectPdfRef = dialogView.findViewById(R.id.btnSelectPdf)
         filesContainerRef = dialogView.findViewById(R.id.filesContainer)
@@ -96,7 +96,7 @@ class CoursesActivity : AppCompatActivity() {
 
         val statuses = arrayOf("Sin empezar", "En progreso", "Completado")
         val difficulties = arrayOf("Fácil", "Medio", "Difícil")
-        val categories = arrayOf("Teoría", "Práctica", "Simulacro", "Lectura") // Opciones libres
+        val categories = arrayOf("Teoría", "Práctica", "Simulacro", "Lectura")
 
         spinnerStatus.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, statuses)
         spinnerDifficulty.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, difficulties)
@@ -121,7 +121,8 @@ class CoursesActivity : AppCompatActivity() {
 
         val tituloVentana = if (courseToEdit == null) "📄 Nueva Página de Curso" else "✏️ Editar Página de Curso"
 
-        AlertDialog.Builder(this)
+        // Construimos el AlertDialog
+        val dialogBuilder = AlertDialog.Builder(this)
             .setView(dialogView)
             .setTitle(tituloVentana)
             .setPositiveButton("Guardar") { _, _ ->
@@ -175,7 +176,26 @@ class CoursesActivity : AppCompatActivity() {
                 }
             }
             .setNegativeButton("Cancelar", null)
-            .show()
+
+        // 🗑️ Si estamos EDITANDO un curso existente, añadimos el botón de eliminar
+        if (courseToEdit != null) {
+            dialogBuilder.setNeutralButton("Eliminar") { _, _ ->
+                AlertDialog.Builder(this)
+                    .setTitle("Eliminar curso")
+                    .setMessage("¿Estás seguro de que deseas eliminar '${courseToEdit.title}'? Esta acción no se puede deshacer.")
+                    .setPositiveButton("Sí, eliminar") { _, _ ->
+                        lifecycleScope.launch(Dispatchers.IO) {
+                            courseDao.deleteCourse(courseToEdit) // Asegúrate de tener este método en tu CourseDao
+                            cargarCursosDesdeDb()
+                        }
+                        Toast.makeText(this, "Curso eliminado", Toast.LENGTH_SHORT).show()
+                    }
+                    .setNegativeButton("Cancelar", null)
+                    .show()
+            }
+        }
+
+        dialogBuilder.show()
     }
 
     // Dibuja dinámicamente los archivos en el diálogo haciéndolos clicables y con opción de borrar

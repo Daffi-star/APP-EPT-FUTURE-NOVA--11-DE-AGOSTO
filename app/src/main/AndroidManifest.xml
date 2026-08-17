@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
 
     <application
         android:allowBackup="true"
@@ -72,6 +73,10 @@
 
         <activity
             android:name=".MyGroupsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".SettingsProfileActivity"
             android:exported="false" />
 
         <activity

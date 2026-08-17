@@ -6,6 +6,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +14,6 @@ import com.dafi.ruwayspace.data.ChatMessage
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.QuerySnapshot
 
 class GroupChatActivity : AppCompatActivity() {
 
@@ -34,6 +34,11 @@ class GroupChatActivity : AppCompatActivity() {
         tvTitle.text = "Sala: $roomCode"
 
         findViewById<ImageView>(R.id.btnBackChat)?.setOnClickListener { finish() }
+
+        // Botón para salir del grupo
+        findViewById<ImageView>(R.id.btnExitGroup)?.setOnClickListener {
+            mostrarDialogoSalida()
+        }
 
         setupRecyclerView()
         setupListeners()
@@ -105,5 +110,29 @@ class GroupChatActivity : AppCompatActivity() {
                     }
                 }
             }
+    }
+
+    // 🚪 Función corregida para eliminar el grupo de tu lista personal
+    private fun mostrarDialogoSalida() {
+        val userId = auth.currentUser?.uid ?: return
+
+        AlertDialog.Builder(this)
+            .setTitle("Salir del grupo")
+            .setMessage("¿Estás seguro de que deseas salir de la sala $roomCode? Ya no aparecerá en tus grupos.")
+            .setPositiveButton("Sí, salir") { _, _ ->
+                // Eliminamos el documento del grupo en la subcolección personal del usuario
+                db.collection("users").document(userId)
+                    .collection("my_rooms").document(roomCode)
+                    .delete()
+                    .addOnSuccessListener {
+                        Toast.makeText(this, "Has salido del grupo", Toast.LENGTH_SHORT).show()
+                        finish() // Cierra el chat y regresa a la pantalla anterior
+                    }
+                    .addOnFailureListener { e ->
+                        Toast.makeText(this, "Error al salir: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
+            }
+            .setNegativeButton("Cancelar", null)
+            .show()
     }
 }
